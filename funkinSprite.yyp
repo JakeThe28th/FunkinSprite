@@ -6,6 +6,7 @@
     {"id":{"name":"clean_old_sprites","path":"scripts/clean_old_sprites/clean_old_sprites.yy",},"order":3,},
     {"id":{"name":"save_sheet_XML","path":"scripts/save_sheet_XML/save_sheet_XML.yy",},"order":0,},
     {"id":{"name":"spr_back","path":"sprites/spr_back/spr_back.yy",},"order":1,},
+    {"id":{"name":"add_sprite_anim","path":"scripts/add_sprite_anim/add_sprite_anim.yy",},"order":4,},
     {"id":{"name":"load_sheet_XML","path":"scripts/load_sheet_XML/load_sheet_XML.yy",},"order":1,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
   ],

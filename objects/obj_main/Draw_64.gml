@@ -54,6 +54,7 @@ draw_set_color(c_gray)
 	
 	draw_text(xd, yd, "Load sheet & XML")
 	draw_rectangle(xd, yd, xd+size, yd+size, true)
+	
 
 
 //Draw a box for an animation
@@ -88,7 +89,8 @@ repeat ds_map_size(animations) {
 	ind = ((current_time/(1000/fpersecond)))
 		
 	if ds_list_size(animations[? entry]) > 0 {
-		spr = ds_list_find_value(animations[? entry], ind mod ds_list_size(animations[? entry]))
+		spr = ds_list_find_value(animations[? entry], ind mod ds_list_size(animations[? entry]))[? "sprite"]
+		
 	
 		var aspect = (sprite_get_width(spr)/sprite_get_height(spr))
 		var yscale = (size)/sprite_get_height(spr)
@@ -155,7 +157,8 @@ repeat ds_map_size(animations) {
 		
 		if ds_list_size(ds) > 0 and  ds_list_find_value(ds, ind mod ds_list_size(ds)) != undefined{
 				
-		var spr = ds_list_find_value(ds, ind mod ds_list_size(ds))
+		var spr_ds = ds_list_find_value(ds, ind mod ds_list_size(ds))
+		var spr = spr_ds[? "sprite"]
 		
 		var aspect = (sprite_get_width(spr)/sprite_get_height(spr))
 		var yscale = (window_get_height()-timeline_scale)/sprite_get_height(spr)
@@ -174,7 +177,12 @@ repeat ds_map_size(animations) {
 		draw_rectangle_color(x1, y1, x1+(xscale*sprite_get_width(spr)), y1+(yscale*sprite_get_height(spr)), c_white, c_navy, c_blue, c_teal, false)
 		draw_set_alpha(1)
 		
-		draw_sprite_ext(spr,0,x1, y1, xscale, yscale, 0, c_white, 1)
+			var offX = spr_ds[? "frameX"]
+			var offY = spr_ds[? "frameY"]
+				if offX = undefined offX = 0 else offX =  real(offX) / xscale
+				if offY = undefined offY = 0 else offY =  real(offY) / yscale		
+		
+		draw_sprite_ext(spr,0,x1-offX, y1-offY, xscale, yscale, 0, c_white, 1)
 		draw_set_color(c_white)
 		
 		}
@@ -199,6 +207,8 @@ repeat ds_map_size(animations) {
 				}
 		
 			var spr = ds[| i]
+			var spr = spr[? "sprite"]
+
 			draw_sprite_ext(spr, 0, xd,yd,size/sprite_get_width(spr),size/sprite_get_height(spr),0,c_white,1)
 			
 			draw_rectangle(xd, yd, xd+size, yd+size, true)
@@ -219,8 +229,9 @@ repeat ds_map_size(animations) {
 					if fnameCache[? fname] = undefined {
 						spr = sprite_add(fname,1,0,0,0,0)
 						fnameCache[? fname] = spr
-						ds_list_add(ds, spr)
-						} else ds_list_add(ds, fnameCache[? fname])
+						
+						add_sprite_anim(ds, spr, undefined, undefined, undefined, undefined)
+						} else add_sprite_anim(ds, fnameCache[? fname], undefined, undefined, undefined, undefined)
 					}
 				}
 	

@@ -33,26 +33,28 @@ function save_sheet_XML() {
 			var frame = 0
 			var ds = animations[? entry]
 			repeat ds_list_size(ds) {
-				if ds_map_find_value(saved_cache, ds[| frame]) = undefined {
+				var spr = ds[| frame]
+				var spr = spr[? "sprite"]
+				if ds_map_find_value(saved_cache, spr) = undefined {
 				
 				
 				
-				if xd+sprite_get_width(ds[| frame]) > xres {
+				if xd+sprite_get_width(spr) > xres {
 					yd+=tallestOfThisRow
 					tallestOfThisRow=0
 					xd=0
 					}
 				
 				
-				draw_sprite(ds[| frame],0,xd,yd)
-				if sprite_get_height(ds[| frame]) > tallestOfThisRow tallestOfThisRow = sprite_get_height(ds[| frame])	
+				draw_sprite(spr,0,xd,yd)
+				if sprite_get_height(spr) > tallestOfThisRow tallestOfThisRow = sprite_get_height(spr)	
 				
 				var spds = ds_map_create()
 				spds[? "x"] = xd
 				spds[? "y"] = yd
-				spds[? "width"] = sprite_get_width(ds[| frame])
-				spds[? "height"] = sprite_get_height(ds[| frame])
-				ds_map_add_map(saved_cache, ds[| frame], spds)
+				spds[? "width"] = sprite_get_width(spr)
+				spds[? "height"] = sprite_get_height(spr)
+				ds_map_add_map(saved_cache, spr, spds)
 				
 				
 				var zeroes = "000"
@@ -60,17 +62,17 @@ function save_sheet_XML() {
 				if string_length(string(frame)) = 3 zeroes = "0"
 				if string_length(string(frame)) = 4 zeroes = ""
 				
-				file_text_write_string(XML, "<SubTexture name=\"" + string(entry) + zeroes + string(frame) + "\" x=\"" + string(xd) + "\" y=\"" + string(yd) + "\" width=\"" + string(sprite_get_width(ds[| frame])) + "\" height=\"" + string(sprite_get_height(ds[| frame])) + "\"/>")
+				file_text_write_string(XML, "<SubTexture name=\"" + string(entry) + zeroes + string(frame) + "\" x=\"" + string(xd) + "\" y=\"" + string(yd) + "\" width=\"" + string(sprite_get_width(spr)) + "\" height=\"" + string(sprite_get_height(spr)) + "\"/>")
 				file_text_writeln(XML)
 				
-				xd+=sprite_get_width(ds[| frame])
+				xd+=sprite_get_width(spr)
 				} else {
 					var zeroes = "000"
 					if string_length(string(frame)) = 2 zeroes = "00"
 					if string_length(string(frame)) = 3 zeroes = "0"
 					if string_length(string(frame)) = 4 zeroes = ""
 					
-					var spds = ds_map_find_value(saved_cache, ds[| frame])
+					var spds = ds_map_find_value(saved_cache, spr)
 
 					file_text_write_string(XML, "<SubTexture name=\"" + string(entry) + zeroes + string(frame) + "\" x=\"" + string(spds[? "x"]) + "\" y=\"" + string(spds[? "y"]) + "\" width=\"" + string(spds[? "width"]) + "\" height=\"" + string(spds[? "height"]) + "\"/>")
 					file_text_writeln(XML)

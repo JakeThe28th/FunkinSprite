@@ -6,12 +6,14 @@ function clean_old_sprites() {
 	
 	var delete_increment = 0
 			repeat ds_list_size(animations[? entry]) {
-				ds_list_add(global.spritesToDelete, ds_list_find_value(animations[? entry], delete_increment))
+				ds_list_add(global.spritesToDelete, ds_list_find_value(animations[? entry], delete_increment)[? "sprite"])
 				delete_increment++
 				}
 				
 				
 	entry = ds_map_find_next(animations, entry)
 	}
+	
+	ds_map_destroy(animations)
 
 }

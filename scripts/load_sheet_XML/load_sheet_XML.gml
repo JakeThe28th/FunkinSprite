@@ -82,6 +82,18 @@ function load_sheet_XML() {
 	var anim_width = string_replace_all(split_string(anim_data[ieechar+2], "=")[1],  "\"", "")
 	var anim_height = string_replace_all(split_string(anim_data[ieechar+3], "=")[1],  "\"", "")
 	
+	if array_length(anim_data) > ieechar+4 {
+	var frame_x = string_replace_all(split_string(anim_data[ieechar+4], "=")[1],  "\"", "")
+	var frame_y = string_replace_all(split_string(anim_data[ieechar+5], "=")[1],  "\"", "")
+	var frame_width = string_replace_all(split_string(anim_data[ieechar+6], "=")[1],  "\"", "")
+	var frame_height = string_replace_all(split_string(anim_data[ieechar+7], "=")[1],  "\"", "")
+	} else {
+		var frame_x = undefined
+		var frame_y = undefined
+		var frame_width = undefined
+		var frame_height = undefined
+		}
+	
 	
 	var current_anim_import = animations[? anim_name]
 	if current_anim_import = undefined {
@@ -94,12 +106,11 @@ function load_sheet_XML() {
 	
 		var sprite_import = sprite_create_from_surface(sheet, anim_x, anim_y, anim_width, anim_height, 0, 0, 0, 0);
 		 loaded_cache[? string(anim_x) + ";" + string(anim_y) + ";" + string(anim_width) + ";" + string(anim_height)] = sprite_import
-		ds_list_add(current_anim_import, sprite_import)
-	
+		 
+		add_sprite_anim(current_anim_import, sprite_import, frame_x, frame_y, frame_width, frame_height)
 		} else {
 			
-			ds_list_add(current_anim_import, cacheplace)
-			
+			add_sprite_anim(current_anim_import, cacheplace, frame_x, frame_y, frame_width, frame_height)
 			}		// + string(anim_frame)
 		
 	
