@@ -1,10 +1,13 @@
 {
   "resources": [
     {"id":{"name":"func_base64","path":"scripts/func_base64/func_base64.yy",},"order":5,},
+    {"id":{"name":"Note1","path":"notes/Note1/Note1.yy",},"order":0,},
     {"id":{"name":"obj_main","path":"objects/obj_main/obj_main.yy",},"order":0,},
     {"id":{"name":"spr_plus","path":"sprites/spr_plus/spr_plus.yy",},"order":0,},
     {"id":{"name":"util","path":"scripts/util/util.yy",},"order":2,},
+    {"id":{"name":"ext","path":"scripts/ext/ext.yy",},"order":6,},
     {"id":{"name":"clean_old_sprites","path":"scripts/clean_old_sprites/clean_old_sprites.yy",},"order":3,},
+    {"id":{"name":"spr_hold","path":"sprites/spr_hold/spr_hold.yy",},"order":2,},
     {"id":{"name":"save_sheet_XML","path":"scripts/save_sheet_XML/save_sheet_XML.yy",},"order":0,},
     {"id":{"name":"spr_back","path":"sprites/spr_back/spr_back.yy",},"order":1,},
     {"id":{"name":"add_sprite_anim","path":"scripts/add_sprite_anim/add_sprite_anim.yy",},"order":4,},

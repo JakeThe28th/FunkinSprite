@@ -47,6 +47,7 @@ function save_sheet_XML() {
 				
 				
 				draw_sprite(spr,0,xd,yd)
+				//show_debug_message("sprite rendered: " + string(spr))
 				if sprite_get_height(spr) > tallestOfThisRow tallestOfThisRow = sprite_get_height(spr)	
 				
 				var spds = ds_map_create()

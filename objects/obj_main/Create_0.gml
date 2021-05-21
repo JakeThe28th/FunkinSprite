@@ -28,3 +28,9 @@ fpersecond = 24
 
 global.spritesToDelete = ds_list_create()
 fnameCache = ds_map_create()
+
+
+//NewVars
+
+timelineScale = 1
+holdsNumbers = true

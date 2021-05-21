@@ -57,6 +57,47 @@ draw_set_color(c_gray)
 	draw_text(xd, yd, "Load sheet & XML")
 	draw_rectangle(xd, yd, xd+size, yd+size, true)
 	
+//timeline scale
+size = 188
+xd = 10
+yd = 130
+draw_set_color(c_gray)
+	draw_rectangle(xd, yd, xd+size, yd+20, false)
+	if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+20) {
+		draw_set_color(c_dkgray)
+		draw_rectangle(xd, yd, xd+size, yd+20, false)
+		if mouse_check_button_released(mb_left) {
+			timelineScale = get_integer("Scale of timeline (anything above 0 is good)", 1)
+			}
+		}
+	draw_set_color(c_white)
+	
+	draw_text(xd, yd, "Timeline Scale : " + string(timelineScale))
+	draw_rectangle(xd, yd, xd+size, yd+size, true)
+	
+
+//timeline numbers
+size = 250
+xd = 10
+yd = 160
+draw_set_color(c_gray)
+	draw_rectangle(xd, yd, xd+size, yd+20, false)
+	if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+20) {
+		draw_set_color(c_dkgray)
+		draw_rectangle(xd, yd, xd+size, yd+20, false)
+		if mouse_check_button_released(mb_left) {
+			switch (holdsNumbers) {
+				case 1: holdsNumbers = 0; break;
+				case 0: holdsNumbers = 1; break;
+				}
+			}
+		}
+	draw_set_color(c_white)
+	
+	if holdsNumbers = true draw_text(xd, yd, "Show numbers on held frames")
+	if holdsNumbers = false draw_text(xd, yd, "Show bars on held frames")
+	draw_rectangle(xd, yd, xd+size, yd+size, true)
+	
 
 
 //Draw a box for an animation
@@ -197,13 +238,37 @@ repeat ds_map_size(animations) {
 		var xd = sidebar_size + 20
 		var yd = window_get_height()-timeline_scale+10
 		var size = 64
+		var size = size*timelineScale
 		var i = 0
+		var i_hold = 0
+		var hold_end = 0
+		var prev_temp_size = 1
 		repeat ds_list_size(ds) {
-			draw_rectangle(xd, yd, xd+size, yd+size, false)
+			var spr = ds[| i]
+			var spr = spr[? "sprite"]
+			
+			i_hold++
+			hold_end = 0
+			if i>0 if spr == ds[| i-1][? "sprite"] spr = spr_hold else hold_end = 1 else hold_end = 1
+			
+
+			var temp_size = size			
+			
+			if hold_end = 0 temp_size = size/2
+			
+			var y_off = size - (temp_size/2) -32
+			
+			if holdsNumbers and hold_end = 1 or !holdsNumbers {
+			
+			
+			draw_set_alpha(0.25)
+			draw_rectangle(xd, (yd+y_off), xd+temp_size, (yd+y_off)+temp_size, false)
+			draw_set_alpha(1)
 			draw_set_color(c_white)
+			
 	
-			if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+size) {
-				draw_rectangle_color(xd, yd, xd+size, yd+size, c_red, c_red, c_red, c_orange, false)
+			if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, (yd+y_off), xd+temp_size, (yd+y_off)+temp_size) {
+				draw_rectangle_color(xd, (yd+y_off), xd+temp_size, (yd+y_off)+temp_size, c_red, c_red, c_red, c_orange, false)
 				if mouse_check_button_released(mb_right) {
 					//ds_list_add(global.spritesToDelete, ds[| i])
 					ds_list_delete(ds, i)
@@ -212,24 +277,43 @@ repeat ds_map_size(animations) {
 					}
 				}
 		
-			var spr = ds[| i]
-			var spr = spr[? "sprite"]
-
-			draw_sprite_ext(spr, 0, xd,yd,size/sprite_get_width(spr),size/sprite_get_height(spr),0,c_white,1)
+			if !holdsNumbers or spr != spr_hold draw_sprite_ext(spr, 0, xd,(yd+y_off),temp_size/sprite_get_width(spr),temp_size/sprite_get_height(spr),0,c_white,1)
 			
-			draw_rectangle(xd, yd, xd+size, yd+size, true)
-			i++
-			xd += size + 5
+			draw_rectangle(xd, (yd+y_off), xd+temp_size, (yd+y_off)+temp_size, true)
+			
+			
+			if i_hold-1 >0 {
+				if !holdsNumbers { draw_text_outlined(xd-15, (yd+(size - (prev_temp_size/2))), c_black, c_white, i_hold-1)
+					} else {
+						draw_text_outlined(xd-15, (yd+y_off), c_black, c_white, i_hold-1)
+						}		
+				}
+			
+			if hold_end i_hold = 0
+			
+			//draw_text(xd, (yd+y_off), "man")
+			
+			//if holdsNumbers = true draw_text("!")
+			
 			}
+			
+			i++
+			if spr != spr_hold or holdsNumbers = false xd += temp_size + 5
+			prev_temp_size = temp_size
+			}
+			
+				//
+				draw_text_outlined(xd-15, yd, c_black, c_white, i_hold-1)
+				//
 		
 			draw_set_color(c_gray)
 			draw_rectangle(xd, yd, xd+size, yd+size, false)
 			draw_set_color(c_white)
 	
-			var center = 50 //(current_time/10) mod 100
+			var center = 50/timelineScale //(current_time/10) mod 100
 	
 			if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+size) {
-				center -= 10
+				center -= 10/timelineScale
 				if mouse_check_button_released(mb_left) {
 					if !keyboard_check(vk_shift) {
 						var fname = get_open_filename("PNG Images|*.png","")
@@ -249,26 +333,25 @@ repeat ds_map_size(animations) {
 								
 							var ile = file_find_next()
 							if ile != "" {
-							
-							if fnameCache[? ile] = undefined {
+								
 							spr = sprite_add(filename_path(fname)+ile,1,0,0,0,0)
 							
-							
-							
-							
-							fnameCache[? ile] = spr
-						
+							var base_64 = j_sprite_base64_encode(spr)
+							if fnameCache[? base_64] = undefined {
+								fnameCache[? base_64] = spr
 						
 							
+								//CHANGE CACHE CODE TO CHECK FOR SAME BASE64 SPRITE INSTEAD OF FILENAME [X]  i think i did it
+								//FILTER IMAGE SEQUENCE TO files/filename instead of any file in order
+								//remove end numbers and then filter via that name.
 							
-							//CHANGE CACHE CODE TO CHECK FOR SAME BASE64 SPRITE INSTEAD OF FILENAME
-							//FILTER IMAGE SEQUENCE TO files/filename instead of any file in order
-							//remove end numbers and then filter via that name.
 							
+								add_sprite_anim(ds, spr, undefined, undefined, undefined, undefined)
 							
-							add_sprite_anim(ds, spr, undefined, undefined, undefined, undefined)
-							
-							} else add_sprite_anim(ds, fnameCache[? ile], undefined, undefined, undefined, undefined)
+								} else {
+									add_sprite_anim(ds, fnameCache[? base_64], undefined, undefined, undefined, undefined)
+									sprite_delete(spr)
+									}
 							}
 							} until ile = ""
 							
@@ -276,7 +359,8 @@ repeat ds_map_size(animations) {
 					}
 				}
 	
-			draw_sprite_ext(spr_plus, 0, xd+(center/2),yd+(center/2),(size-center)/sprite_get_width(spr_plus),(size-center)/sprite_get_height(spr_plus),0,c_white,1)
+			var plussize = (size)/sprite_get_height(spr_plus)
+			draw_sprite_ext(spr_plus, 0, xd+(plussize/2),yd+(plussize/2),plussize/1.14, plussize/1.14,0,c_white,1)
 			draw_rectangle(xd, yd, xd+size, yd+size, true)
 		}
 

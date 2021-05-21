@@ -4,11 +4,12 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function j_sprite_base64_encode(sprite){
 	//turn off 3d testing for a sec
-	gpu_set_zwriteenable(false);//Enables writing to the z-buffer
-	gpu_set_ztestenable(false);//Enables the depth testing, so far away things are drawn beind closer things
+	//gpu_set_zwriteenable(false);//Enables writing to the z-buffer
+	//gpu_set_ztestenable(false);//Enables the depth testing, so far away things are drawn beind closer things
+	//DONT DO 
+	
 
-
-	draw_sprite(spr_selection, 0 , 0 ,0)
+	//draw_sprite(sprite, 0 , 0 ,0)
 	var surf = surface_create(sprite_get_width(sprite),sprite_get_height(sprite))
 	surface_set_target(surf)
 	draw_sprite(sprite, 0, 0, 0)
@@ -22,9 +23,9 @@ function j_sprite_base64_encode(sprite){
 	surface_free(surf)
 	
 	//ok ok turn it back on now
-	gpu_set_zwriteenable(true);//Enables writing to the z-buffer
-	gpu_set_ztestenable(true);//Enables the depth testing, so far away things are drawn beind closer things
-
+	//gpu_set_zwriteenable(true);//Enables writing to the z-buffer
+	//gpu_set_ztestenable(true);//Enables the depth testing, so far away things are drawn beind closer things
+	//stupid stpudidi dumbfewuiiefmserkop[lerrogepofweiwetopyu
 	
 	return return_
 }

@@ -1,0 +1,12 @@
+add frame holds in timeline
+add exporting offsets
+
+adjustable timeline size or scroll bar
+shorter holds?
+
+holds are numbers or bars toggle
+
+frame scale adjust
+align based on frames (1 = center)
+
+remove scale
