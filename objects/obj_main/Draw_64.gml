@@ -3,6 +3,8 @@
 var sidebar_size = window_get_width()/5 + 20
 draw_rectangle(0, 0, sidebar_size, window_get_height(), false)
 
+draw_set_alpha(1)
+
 //Go back menu
 if current_editing !=-1 {
 size = 158
@@ -174,7 +176,7 @@ repeat ds_map_size(animations) {
 		
 		//BG for normal area
 		draw_set_alpha(.5)
-		draw_rectangle_color(x1, y1, x1+(xscale*sprite_get_width(spr)), y1+(yscale*sprite_get_height(spr)), c_white, c_navy, c_blue, c_teal, false)
+		draw_rectangle_color(x1, y1, x1+(xscale*sprite_get_width(spr)), y1+(yscale*sprite_get_height(spr)), c_white, c_white, c_white, c_white, true)
 		draw_set_alpha(1)
 		
 			var offX = spr_ds[? "frameX"]
@@ -182,8 +184,12 @@ repeat ds_map_size(animations) {
 				if offX = undefined offX = 0 else offX =  real(offX) / xscale
 				if offY = undefined offY = 0 else offY =  real(offY) / yscale		
 		
+	draw_set_alpha(.5)
+		draw_rectangle_color(x1-offX, y1-offY, x1+(xscale*sprite_get_width(spr))-offX, y1+(yscale*sprite_get_height(spr))-offY, c_yellow, c_yellow, c_yellow, c_yellow, true)
+		
 		draw_sprite_ext(spr,0,x1-offX, y1-offY, xscale, yscale, 0, c_white, 1)
 		draw_set_color(c_white)
+	draw_set_alpha(1)	
 		
 		}
 		
@@ -225,13 +231,48 @@ repeat ds_map_size(animations) {
 			if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+size) {
 				center -= 10
 				if mouse_check_button_released(mb_left) {
-					var fname = get_open_filename("PNG Images|*.png","")
-					if fnameCache[? fname] = undefined {
-						spr = sprite_add(fname,1,0,0,0,0)
-						fnameCache[? fname] = spr
+					if !keyboard_check(vk_shift) {
+						var fname = get_open_filename("PNG Images|*.png","")
+						if fnameCache[? fname] = undefined {
+							spr = sprite_add(fname,1,0,0,0,0)
+							fnameCache[? fname] = spr
 						
-						add_sprite_anim(ds, spr, undefined, undefined, undefined, undefined)
-						} else add_sprite_anim(ds, fnameCache[? fname], undefined, undefined, undefined, undefined)
+							add_sprite_anim(ds, spr, undefined, undefined, undefined, undefined)
+							} else add_sprite_anim(ds, fnameCache[? fname], undefined, undefined, undefined, undefined)
+						} else {
+							
+							var fname = get_open_filename("PNG Image Sequence 0000|*.png","")
+							
+							var ile = file_find_first(filename_path(fname)+"*.png", 0);
+							
+							do {
+								
+							var ile = file_find_next()
+							if ile != "" {
+							
+							if fnameCache[? ile] = undefined {
+							spr = sprite_add(filename_path(fname)+ile,1,0,0,0,0)
+							
+							
+							
+							
+							fnameCache[? ile] = spr
+						
+						
+							
+							
+							//CHANGE CACHE CODE TO CHECK FOR SAME BASE64 SPRITE INSTEAD OF FILENAME
+							//FILTER IMAGE SEQUENCE TO files/filename instead of any file in order
+							//remove end numbers and then filter via that name.
+							
+							
+							add_sprite_anim(ds, spr, undefined, undefined, undefined, undefined)
+							
+							} else add_sprite_anim(ds, fnameCache[? ile], undefined, undefined, undefined, undefined)
+							}
+							} until ile = ""
+							
+							}
 					}
 				}
 	

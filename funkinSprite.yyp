@@ -1,5 +1,6 @@
 {
   "resources": [
+    {"id":{"name":"func_base64","path":"scripts/func_base64/func_base64.yy",},"order":5,},
     {"id":{"name":"obj_main","path":"objects/obj_main/obj_main.yy",},"order":0,},
     {"id":{"name":"spr_plus","path":"sprites/spr_plus/spr_plus.yy",},"order":0,},
     {"id":{"name":"util","path":"scripts/util/util.yy",},"order":2,},
@@ -56,7 +57,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"tile004.png","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
-    "IDEVersion": "2.3.1.542",
+    "IDEVersion": "2.3.2.556",
   },
   "resourceVersion": "1.4",
   "name": "funkinSprite",
