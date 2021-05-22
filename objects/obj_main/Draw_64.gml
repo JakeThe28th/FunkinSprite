@@ -1,6 +1,20 @@
 /// @description Insert description here
 // You can write your code in this editor
 var sidebar_size = window_get_width()/5 + 20
+
+
+draw_set_color(c_black)
+
+if current_editing = -1 draw_set_alpha(.8)
+if current_editing != -1 draw_set_alpha(.6)
+draw_rectangle(sidebar_size, 0, window_get_width(), window_get_height(), false)
+draw_set_alpha(1)
+
+
+if doOutline funkin_line(sidebar_size,0,sidebar_size,window_get_height(), make_color_hsv(166.458333334,178.5,186.15))
+
+draw_set_alpha(.2)
+draw_set_color(c_black)
 draw_rectangle(0, 0, sidebar_size, window_get_height(), false)
 
 draw_set_alpha(1)
@@ -9,55 +23,30 @@ draw_set_alpha(1)
 if current_editing !=-1 {
 size = 158
 xd = 10
-yd = 10
-draw_set_color(c_gray)
-	draw_rectangle(xd, yd, xd+size, yd+20, false)
-	if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+20) {
-		draw_set_color(c_dkgray)
-		draw_rectangle(xd, yd, xd+size, yd+20, false)
-		if mouse_check_button_released(mb_left) current_editing = -1
-		}
-	draw_set_color(c_white)
-	
-	draw_text(xd, yd, "Back to main menu")
-	draw_rectangle(xd, yd, xd+size, yd+size, true)
-	
+yd = 30
+if button(xd, yd,  xd+size, yd+20, c_dkgray, c_black, 1, "Back to main menu") {
+	current_editing = -1
+	}
 }	
 
 //export
 size = 158
 xd = 10
-yd = 50
-draw_set_color(c_gray)
-	draw_rectangle(xd, yd, xd+size, yd+20, false)
-	if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+20) {
-		draw_set_color(c_dkgray)
-		draw_rectangle(xd, yd, xd+size, yd+20, false)
-		if mouse_check_button_released(mb_left) save_sheet_XML()
-		}
-	draw_set_color(c_white)
-	
-	draw_text(xd, yd, "Save sheet & XML")
-	draw_rectangle(xd, yd, xd+size, yd+size, true)
+yd = 55
+if button(xd, yd,  xd+size, yd+20, c_dkgray, c_black, 1, "Save sheet & XML") {
+	save_sheet_XML()
+	}
 	
 
 //import
 size = 158
 xd = 10
 yd = 80
-draw_set_color(c_gray)
-	draw_rectangle(xd, yd, xd+size, yd+20, false)
-	if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+20) {
-		draw_set_color(c_dkgray)
-		draw_rectangle(xd, yd, xd+size, yd+20, false)
-		if mouse_check_button_released(mb_left) load_sheet_XML()
-		}
-	draw_set_color(c_white)
+if button(xd, yd,  xd+size, yd+20, c_dkgray, c_black, 1, "Load sheet & XML") {
+	load_sheet_XML()
+	}
 	
-	draw_text(xd, yd, "Load sheet & XML")
-	draw_rectangle(xd, yd, xd+size, yd+size, true)
-	
-//timeline scale
+/* timeline scale
 size = 188
 xd = 10
 yd = 130
@@ -75,29 +64,33 @@ draw_set_color(c_gray)
 	draw_text(xd, yd, "Timeline Scale : " + string(timelineScale))
 	draw_rectangle(xd, yd, xd+size, yd+size, true)
 	
+*/
 
 //timeline numbers
-size = 250
+size = 100
 xd = 10
 yd = 160
-draw_set_color(c_gray)
-	draw_rectangle(xd, yd, xd+size, yd+20, false)
-	if point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), xd, yd, xd+size, yd+20) {
-		draw_set_color(c_dkgray)
-		draw_rectangle(xd, yd, xd+size, yd+20, false)
-		if mouse_check_button_released(mb_left) {
-			switch (holdsNumbers) {
+if holdsNumbers = true var text = "Show numbers on held frames"
+if holdsNumbers = false var text = "Show bars on held frames"
+if button(xd, yd,  xd+size, yd+20, c_dkgray, c_black, 1, text) {
+	switch (holdsNumbers) {
 				case 1: holdsNumbers = 0; break;
 				case 0: holdsNumbers = 1; break;
 				}
-			}
 		}
-	draw_set_color(c_white)
 	
-	if holdsNumbers = true draw_text(xd, yd, "Show numbers on held frames")
-	if holdsNumbers = false draw_text(xd, yd, "Show bars on held frames")
-	draw_rectangle(xd, yd, xd+size, yd+size, true)
 	
+size = 100
+xd = 10
+yd = 185
+if useOffset = true var text = "Use offset"
+if useOffset = false var text = "Don't use offset"
+if button(xd, yd,  xd+size, yd+20, c_dkgray, c_black, 1, text) {
+	switch (useOffset) {
+				case 1: useOffset = 0; break;
+				case 0: useOffset = 1; break;
+				}
+		}
 
 
 //Draw a box for an animation
@@ -188,11 +181,11 @@ repeat ds_map_size(animations) {
 	} else {
 		
 		//Sprite editing menu
-		
-		draw_set_color(c_maroon)
+		draw_set_alpha(.8)
+		draw_set_color(c_black)
 		var timeline_scale = window_get_height()/6
-		draw_rectangle(sidebar_size,0,window_get_width(),window_get_height()-timeline_scale,false)
-		
+		draw_rectangle(sidebar_size,window_get_height(),window_get_width(),window_get_height()-timeline_scale,false)
+		draw_set_alpha(1)
 		var ds = animations[? current_editing]
 		
 		//fpersecond = 12
@@ -224,6 +217,11 @@ repeat ds_map_size(animations) {
 			var offY = spr_ds[? "frameY"]
 				if offX = undefined offX = 0 else offX =  real(offX) / xscale
 				if offY = undefined offY = 0 else offY =  real(offY) / yscale		
+				
+			if useOffset = false {
+				offX = 0 
+				offY = 0
+				}
 		
 	draw_set_alpha(.5)
 		draw_rectangle_color(x1-offX, y1-offY, x1+(xscale*sprite_get_width(spr))-offX, y1+(yscale*sprite_get_height(spr))-offY, c_yellow, c_yellow, c_yellow, c_yellow, true)

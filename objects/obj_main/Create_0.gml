@@ -34,3 +34,5 @@ fnameCache = ds_map_create()
 
 timelineScale = 1
 holdsNumbers = true
+useOffset = true
+doOutline = true
