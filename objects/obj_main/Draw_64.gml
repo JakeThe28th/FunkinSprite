@@ -93,12 +93,18 @@ if button(xd, yd,  xd+size, yd+20, c_dkgray, c_black, 1, text) {
 		}
 
 
+if mouse_wheel_down() gallery_offset_y_new-=60
+if mouse_wheel_up() gallery_offset_y_new+=60
+gallery_offset_y = lerp(gallery_offset_y, gallery_offset_y_new, .25)
+
+//gallery_height_y = 0
+
 //Draw a box for an animation
 //draw anim name
 if current_editing = -1 {
 
 var xd = sidebar_size + 20
-var yd = 20
+var yd = 20 + gallery_offset_y
 var size = 128
 
 var entry = ds_map_find_first(animations)
@@ -175,8 +181,6 @@ repeat ds_map_size(animations) {
 	
 	draw_sprite_ext(spr_plus, 0, xd+(center/2),yd+(center/2),(size-center)/sprite_get_width(spr_plus),(size-center)/sprite_get_height(spr_plus),0,c_white,1)
 	draw_rectangle(xd, yd, xd+size, yd+size, true)
-	
-	
 
 	} else {
 		

@@ -36,3 +36,8 @@ timelineScale = 1
 holdsNumbers = true
 useOffset = true
 doOutline = true
+
+gallery_offset_y = 0;
+gallery_offset_y_new = 0;
+
+handle_y = 0;
