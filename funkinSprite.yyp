@@ -1,6 +1,8 @@
 {
   "resources": [
+    {"id":{"name":"XML Notes","path":"notes/XML Notes/XML Notes.yy",},"order":1,},
     {"id":{"name":"func_base64","path":"scripts/func_base64/func_base64.yy",},"order":5,},
+    {"id":{"name":"xml_get","path":"scripts/xml_get/xml_get.yy",},"order":8,},
     {"id":{"name":"Note1","path":"notes/Note1/Note1.yy",},"order":0,},
     {"id":{"name":"obj_main","path":"objects/obj_main/obj_main.yy",},"order":0,},
     {"id":{"name":"spr_plus","path":"sprites/spr_plus/spr_plus.yy",},"order":0,},

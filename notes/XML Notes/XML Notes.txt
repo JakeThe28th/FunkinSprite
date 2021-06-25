@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Hank.png">
+<!-- Created with Kades Custom Converter -->
+<SubTexture name="Hank0001.png" x="1" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0002.png" x="332" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0003.png" x="663" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0004.png" x="994" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0005.png" x="1325" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0006.png" x="1656" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0007.png" x="1987" y="1" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+<SubTexture name="Hank0008.png" x="1" y="296" width="329" height="293" frameX="-0" frameY="-0" frameWidth="329" frameHeight="293"/>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+Just info
+
+<TextureAtlas imagePath="Hank.png">
+Image path
+
+<!-- Created with Kades Custom Converter -->
+Comments
+
+<SubTexture [...] >
+frame
+
+variable scheme:
+everything is string
+
+IDENTIFIER="STRING"
+
+xml_get("SubTexture", "Hank0001", x) //Get from Name
+OR
+xml_get("SubTexture", 2, x) //Get second subtexture
+
+NOO
+JUST CONVER TO  DS MAP

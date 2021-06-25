@@ -28,78 +28,60 @@ function load_sheet_XML() {
 	ds_list_add(global.spritesToDelete, sheet_spr_temp)
 	
 	var XML = file_text_open_read(XMLpath)
-	var str = ""
-	do {
-		file_text_readln(XML)
-		str = file_text_read_string(XML)
-		} until string_pos("SubTexture", str) > 0
-		
+	
+	var XML_ = xml_to_ds(XML)
+	
 	
 	animations = ds_map_create()
 	
-	//Subtexture loop
+	var incremental_i = 0;
 	do {
 		
-	var anim_data = string_replace_all(str, "<SubTexture ", "")
-	var anim_data = string_replace_all(anim_data, "/>", "")
-	var anim_data = split_string(anim_data, " ")
+		var current_property = ds_list_find_value(XML_, incremental_i)
 		
-	var anim_name = anim_data[0] //string_replace_all(split_string(anim_data[0], "=")[1],  "\"", "")
-	
-	var chars = ""
-	var cchar = ""
-	var ieechar = 0
-	var quotespassed = 0
-	do {
-		cchar = anim_data[ieechar]
+		if current_property[? "XML_Name"] = "SubTexture" {
 		
-		chars = chars + anim_data[ieechar] + " "
+		var anim_name = current_property[? "name"]
 		
-		if string_pos("\"", cchar) > 0 quotespassed ++
-		
-		ieechar++
-		} until string_pos("\"", cchar) > 0 and quotespassed > 1
-		
-	var anim_name = string_replace_all(chars, "\"", "")
-	
-	
-	var chars = ""
-	var cchar = ""
-	var ichar = 1
-	do {
-		chars = chars + cchar
-		cchar = string_char_at(anim_name, ichar)
+		var chars = ""
+		var cchar = ""
+		var ichar = 1
+		do {
+			chars = chars + cchar
+			cchar = string_char_at(anim_name, ichar)
 				
-		ichar++
-		} until cchar = 0
-	
-	var anim_frame = string_copy(anim_name, ichar-1, string_length(anim_name)-(ichar-1))
-	var anim_name = string_replace_all(chars, "name=", "")
-	
-	
-	var anim_x = string_replace_all(split_string(anim_data[ieechar], "=")[1],  "\"", "")
-	var anim_y = string_replace_all(split_string(anim_data[ieechar+1], "=")[1],  "\"", "")
-	var anim_width = string_replace_all(split_string(anim_data[ieechar+2], "=")[1],  "\"", "")
-	var anim_height = string_replace_all(split_string(anim_data[ieechar+3], "=")[1],  "\"", "")
-	
-	if array_length(anim_data) > ieechar+4 {
-	var frame_x = string_replace_all(split_string(anim_data[ieechar+4], "=")[1],  "\"", "")
-	var frame_y = string_replace_all(split_string(anim_data[ieechar+5], "=")[1],  "\"", "")
-	var frame_width = string_replace_all(split_string(anim_data[ieechar+6], "=")[1],  "\"", "")
-	var frame_height = string_replace_all(split_string(anim_data[ieechar+7], "=")[1],  "\"", "")
-	} else {
-		var frame_x = undefined
-		var frame_y = undefined
-		var frame_width = undefined
-		var frame_height = undefined
-		}
-	
-	
-	var current_anim_import = animations[? anim_name]
-	if current_anim_import = undefined {
-		current_anim_import = ds_list_create()
-		ds_map_add_list(animations, anim_name, current_anim_import)
-		}
+			ichar++
+			} until cchar = 0
+
+		var anim_name = chars
+		
+		
+		var anim_x = current_property[? "x"]
+		var anim_y = current_property[? "y"]
+		var anim_width = current_property[? "width"]
+		var anim_height = current_property[? "height"]
+		
+		if current_property[? "frameX"] != -1 {
+		var frame_x = current_property[? "frameX"]
+		var frame_y = current_property[? "frameY"]
+		var frame_width = current_property[? "frameWidth"]
+		var frame_height = current_property[? "frameHeight"]
+		} else {
+			var frame_x = 0;
+			var frame_y = 0;
+			var frame_width = 0;
+			var frame_height = 0;
+			
+			
+			
+			}
+		
+		
+		var current_anim_import = animations[? anim_name]
+		if current_anim_import = undefined {
+			current_anim_import = ds_list_create()
+			ds_map_add_list(animations, anim_name, current_anim_import)
+			}
 		
 	var cacheplace = loaded_cache[? string(anim_x) + ";" + string(anim_y) + ";" + string(anim_width) + ";" + string(anim_height)]
 	if cacheplace = undefined {
@@ -113,12 +95,10 @@ function load_sheet_XML() {
 			add_sprite_anim(current_anim_import, cacheplace, frame_x, frame_y, frame_width, frame_height)
 			}		// + string(anim_frame)
 		
-	
-	
-	
-	file_text_readln(XML)
-	str = file_text_read_string(XML)
-	
-	} until str = "</TextureAtlas>"
+
+		}
+		
+		incremental_i += 1;		
+		} until incremental_i = ds_list_size(XML_)-1
 	
 }
